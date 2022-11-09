@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(MeshCollider))]
 public class WorldMeshGenerator : MonoBehaviour
 {
+    [SerializeField] FarmBlockGeneration _farmBlockPrefab;
+
     [SerializeField] float _roadThickness = 2;
     [SerializeField] float _width = 1;
     [SerializeField] float _length = 1;
@@ -31,14 +33,6 @@ public class WorldMeshGenerator : MonoBehaviour
         _FieldVertices.Add(new Vector3(_width,0,0));
 
 
-        _FieldTriangles.Add(0);
-        _FieldTriangles.Add(1);
-        _FieldTriangles.Add(2);
-
-        _FieldTriangles.Add(0);
-        _FieldTriangles.Add(2);
-        _FieldTriangles.Add(3);
-
         float widthSqr = _roadThickness * _roadThickness; // 4
         float distanceSqr = widthSqr / 2f; //2
         float distance = Mathf.Sqrt(distanceSqr); //1.14
@@ -47,6 +41,15 @@ public class WorldMeshGenerator : MonoBehaviour
         _FieldVertices.Add(new Vector3(distance,            0, _length - distance ));
         _FieldVertices.Add(new Vector3(_width - distance,   0, _length - distance ));
         _FieldVertices.Add(new Vector3(_width - distance, 0, distance));
+
+        Vector3[] blockVertices = new Vector3[]{
+            new Vector3(distance,            0, distance ),
+            new Vector3(distance,            0, _length - distance ),
+            new Vector3(_width - distance,   0, _length - distance ),
+            new Vector3(_width - distance, 0, distance)
+        };
+        Instantiate(_farmBlockPrefab).GetComponent<FarmBlockGeneration>().GenerateBlock(blockVertices);
+        
         //Left
         _FieldTriangles.Add(0);
         _FieldTriangles.Add(1);
