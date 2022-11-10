@@ -252,6 +252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _farmLandPrefab: {fileID: 4310973114633251705, guid: cd4427d0d9d23d045932964fe644ec7c, type: 3}
+  _hight: -0.05
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

@@ -34,17 +34,10 @@ public class WorldMeshGenerator : MonoBehaviour
 
         _cellWidth = _width / (float)_gridSize.x;
         _cellLength = _length / (float)_gridSize.y;
-        CalculateDistance();
         
+        CalculateDistance();
 
-        Vector3[] blockVertices = new Vector3[]{
-            new Vector3(_distance,                  0, _distance                ),
-            new Vector3(_distance,                  0, _cellLength - _distance  ),
-            new Vector3(_cellWidth - _distance,     0, _cellLength - _distance  ),
-            new Vector3(_cellWidth - _distance,     0, _distance                )
-        };
-
-        _farmLandGen.PopulateVertices(blockVertices);
+        _farmLandGen.PopulateData(_distance,_cellWidth,_cellLength);
 
 
         int count = 0;
