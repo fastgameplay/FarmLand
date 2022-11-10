@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FarmLandGenerator : MonoBehaviour{
     [SerializeField] GameObject _farmLandPrefab;
+    [SerializeField] GameObject _farmLandsHolder;
     [SerializeField] float _hight;
     [SerializeField] float _thickness;
     Vector3[] _vertices;
@@ -19,6 +20,7 @@ public class FarmLandGenerator : MonoBehaviour{
 
         
         _vertices = new Vector3[]{
+
             new Vector3(distance,      0, distance      ), //0
             new Vector3(distance,      0, cellLength    ), //1   
             new Vector3(cellWidth,     0, cellLength    ), //2
@@ -42,7 +44,6 @@ public class FarmLandGenerator : MonoBehaviour{
             new Vector3(cellWidth - _calculatedThickness,  _hight, cellLength - _calculatedThickness    ), //14
             new Vector3(cellWidth - _calculatedThickness,  _hight, distance + _calculatedThickness             ), //15
 
-
         };
 
         _triangles = new int[]{
@@ -63,11 +64,11 @@ public class FarmLandGenerator : MonoBehaviour{
     public void GenerateFarmLandAt(Vector3 position){
 
         GameObject fLand = Instantiate(_farmLandPrefab);
-        fLand.transform.parent = transform;
+        fLand.transform.parent = _farmLandsHolder.transform;
         fLand.transform.localPosition = position;
 
         Mesh mesh = fLand.GetComponent<MeshFilter> ().mesh;
-
+        MeshCollider col = fLand.GetComponent<MeshCollider> ();
 
         mesh.Clear();
         mesh.vertices = _vertices;
@@ -75,5 +76,7 @@ public class FarmLandGenerator : MonoBehaviour{
         mesh.Optimize();
         mesh.RecalculateNormals();
 
+        col.sharedMesh=null;
+        col.sharedMesh=mesh;
     }
 }

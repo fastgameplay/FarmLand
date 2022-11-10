@@ -10,7 +10,9 @@ public class BorderGenerator : MonoBehaviour{
     int[] _triangles;
 
     Mesh _mesh;
+    MeshCollider _col;
     public void PopulateData(float width, float length){
+
         _vertices = new Vector3[]{
             new Vector3(0,0,0),
             new Vector3(0,0,length),
@@ -38,11 +40,15 @@ public class BorderGenerator : MonoBehaviour{
         };
 
         _mesh = _borderObject.GetComponent<MeshFilter> ().mesh;
-
+        _col = _borderObject.GetComponent<MeshCollider>();
+        
         _mesh.Clear();
         _mesh.vertices = _vertices;
         _mesh.triangles = _triangles;
         _mesh.Optimize();
         _mesh.RecalculateNormals();
+
+        _col.sharedMesh = null;
+        _col.sharedMesh = _mesh;
     }
 }

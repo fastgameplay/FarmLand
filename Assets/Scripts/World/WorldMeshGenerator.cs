@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(MeshFilter))]
-[RequireComponent(typeof(MeshCollider))]
+
 [RequireComponent(typeof(FarmLandGenerator))]
 [RequireComponent(typeof(BorderGenerator))]
 
 public class WorldMeshGenerator : MonoBehaviour
 {
+    [SerializeField] GameObject _pathway;
     [SerializeField] Vector2Int _gridSize = new Vector2Int(1,1);
     [SerializeField] float _roadThickness = 2;
     [SerializeField] float _width = 1;
@@ -30,8 +30,9 @@ public class WorldMeshGenerator : MonoBehaviour
     float _distance;
 
     void Start(){
-        _mesh = GetComponent<MeshFilter> ().mesh;
-        _col = GetComponent<MeshCollider> ();
+        _mesh = _pathway.GetComponent<MeshFilter> ().mesh;
+        _col = _pathway.GetComponent<MeshCollider> ();
+
         _farmLandGen = GetComponent<FarmLandGenerator>();
         _borderGen = GetComponent<BorderGenerator>();
 
@@ -123,6 +124,9 @@ public class WorldMeshGenerator : MonoBehaviour
         _mesh.triangles = _FieldTriangles.ToArray();
         _mesh.Optimize();
         _mesh.RecalculateNormals();
+
+        _col.sharedMesh = null;
+        _col.sharedMesh = _mesh;
     }
 
     void CalculateDistance(){
