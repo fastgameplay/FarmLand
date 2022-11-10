@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HitDetector : MonoBehaviour{
+    CameraMovement _cameraMovement;
+
+    void Start(){
+        _cameraMovement =  Camera.main.GetComponent<CameraMovement>();
+    }
     void Update() {  
         if (Input.GetMouseButtonDown(0)) {  
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  
             RaycastHit hit;  
             if (Physics.Raycast(ray, out hit)) {  
-                Debug.Log("Hitted at:" + hit.transform.tag);
                 
                 if (hit.transform.tag == "FarmLand") {  
-                    Debug.Log("Hit Field position: " + hit.transform.position);
+                    _cameraMovement.TargetTransform = hit.transform;
+                    return;
                 }  
+                _cameraMovement.ResetPosition();
             }  
         }
     }
