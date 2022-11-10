@@ -3,99 +3,134 @@ using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshCollider))]
+[RequireComponent(typeof(FarmLandGenerator))]
+
 public class WorldMeshGenerator : MonoBehaviour
 {
-    [SerializeField] FarmBlockGeneration _farmBlockPrefab;
-
+    [SerializeField] Vector2Int _gridSize = new Vector2Int(1,1);
     [SerializeField] float _roadThickness = 2;
     [SerializeField] float _width = 1;
     [SerializeField] float _length = 1;
      
+    FarmLandGenerator _farmLandGen;
+
     private List<Vector3> _FieldVertices = new List<Vector3>();
     private List<int> _FieldTriangles = new List<int>();
 
     private Mesh _mesh;
     private MeshCollider _col;
 
-    int _faceCount;
-  
+    
+
+    float _cellWidth;
+    float _cellLength;
+
+    float _distance;
+
     void Start(){
         _mesh = GetComponent<MeshFilter> ().mesh;
         _col = GetComponent<MeshCollider> ();
-        _width = transform.localScale.x;
-        _length = transform.localScale.z;
-        _faceCount = 0;
+        _farmLandGen = GetComponent<FarmLandGenerator>();
 
-
-        _FieldVertices.Add(new Vector3(0,0,0));
-        _FieldVertices.Add(new Vector3(0,0,_length));
-        _FieldVertices.Add(new Vector3(_width,0,_length));
-        _FieldVertices.Add(new Vector3(_width,0,0));
-
-
-        float widthSqr = _roadThickness * _roadThickness; // 4
-        float distanceSqr = widthSqr / 2f; //2
-        float distance = Mathf.Sqrt(distanceSqr); //1.14
-
-        _FieldVertices.Add(new Vector3(distance,            0, distance ));
-        _FieldVertices.Add(new Vector3(distance,            0, _length - distance ));
-        _FieldVertices.Add(new Vector3(_width - distance,   0, _length - distance ));
-        _FieldVertices.Add(new Vector3(_width - distance, 0, distance));
+        _cellWidth = _width / (float)_gridSize.x;
+        _cellLength = _length / (float)_gridSize.y;
+        CalculateDistance();
+        
 
         Vector3[] blockVertices = new Vector3[]{
-            new Vector3(distance,            0, distance ),
-            new Vector3(distance,            0, _length - distance ),
-            new Vector3(_width - distance,   0, _length - distance ),
-            new Vector3(_width - distance, 0, distance)
+            new Vector3(_distance,                  0, _distance                ),
+            new Vector3(_distance,                  0, _cellLength - _distance  ),
+            new Vector3(_cellWidth - _distance,     0, _cellLength - _distance  ),
+            new Vector3(_cellWidth - _distance,     0, _distance                )
         };
-        Instantiate(_farmBlockPrefab).GetComponent<FarmBlockGeneration>().GenerateBlock(blockVertices);
+
+        _farmLandGen.PopulateVertices(blockVertices);
+
+
+        int count = 0;
+        for (int y = 0; y < _gridSize.y; y++){
+            for (int x = 0; x < _gridSize.x; x++){
+                DrawPathway(x,y,count);
+                _farmLandGen.GenerateFarmLandAt(new Vector3(_cellWidth * x, 0, _cellLength * y));
+                count++;
+            }
+        }
+
+
         
-        //Left
-        _FieldTriangles.Add(0);
-        _FieldTriangles.Add(1);
-        _FieldTriangles.Add(5);
-
-        _FieldTriangles.Add(5);
-        _FieldTriangles.Add(4);
-        _FieldTriangles.Add(0);
-
-        //Top
-        _FieldTriangles.Add(1);
-        _FieldTriangles.Add(2);
-        _FieldTriangles.Add(6);
-
-        _FieldTriangles.Add(6);
-        _FieldTriangles.Add(5);
-        _FieldTriangles.Add(1);
-
-        //Right
-        _FieldTriangles.Add(2);
-        _FieldTriangles.Add(3);
-        _FieldTriangles.Add(7);
-
-        _FieldTriangles.Add(7);
-        _FieldTriangles.Add(6);
-        _FieldTriangles.Add(2);
-
-        //bot
-        _FieldTriangles.Add(3);
-        _FieldTriangles.Add(0);
-        _FieldTriangles.Add(4);
-
-        _FieldTriangles.Add(4);
-        _FieldTriangles.Add(7);
-        _FieldTriangles.Add(3);
 
 
-
-        UpdateMesh();
+        PopulateMesh();
     }
 
-    void UpdateMesh(){
+
+    void DrawPathway(int x, int y, int index){
+        float xPos = _cellWidth * x;
+        float yPos = _cellLength * y;
+
+
+        _FieldVertices.Add(new Vector3(xPos,                0,  yPos                ));
+        _FieldVertices.Add(new Vector3(xPos,                0,  yPos + _cellLength  ));
+        _FieldVertices.Add(new Vector3(xPos + _cellWidth,   0,  yPos + _cellLength  ));
+        _FieldVertices.Add(new Vector3(xPos + _cellWidth,   0, yPos                 ));
+
+
+        _FieldVertices.Add(new Vector3(xPos + _distance,                 0, yPos + _distance                  ));
+        _FieldVertices.Add(new Vector3(xPos + _distance,                 0, yPos + (_cellLength - _distance)  ));
+        _FieldVertices.Add(new Vector3(xPos + (_cellWidth - _distance),  0, yPos + (_cellLength - _distance)  ));
+        _FieldVertices.Add(new Vector3(xPos + (_cellWidth - _distance),  0, yPos + _distance                  ));
+        
+        int offset = index * 8;
+        
+        //Left
+        _FieldTriangles.Add(offset + 0);
+        _FieldTriangles.Add(offset + 1);
+        _FieldTriangles.Add(offset + 5);
+
+        _FieldTriangles.Add(offset + 5);
+        _FieldTriangles.Add(offset + 4);
+        _FieldTriangles.Add(offset + 0);
+
+        //Top
+        _FieldTriangles.Add(offset + 1);
+        _FieldTriangles.Add(offset + 2);
+        _FieldTriangles.Add(offset + 6);
+
+        _FieldTriangles.Add(offset + 6);
+        _FieldTriangles.Add(offset + 5);
+        _FieldTriangles.Add(offset + 1);
+
+        //Right
+        _FieldTriangles.Add(offset + 2);
+        _FieldTriangles.Add(offset + 3);
+        _FieldTriangles.Add(offset + 7);
+
+        _FieldTriangles.Add(offset + 7);
+        _FieldTriangles.Add(offset + 6);
+        _FieldTriangles.Add(offset + 2);
+
+        //bot
+        _FieldTriangles.Add(offset + 3);
+        _FieldTriangles.Add(offset + 0);
+        _FieldTriangles.Add(offset + 4);
+
+        _FieldTriangles.Add(offset + 4);
+        _FieldTriangles.Add(offset + 7);
+        _FieldTriangles.Add(offset + 3);
+
+    }
+
+    void PopulateMesh(){
         _mesh.Clear();
         _mesh.vertices = _FieldVertices.ToArray();
         _mesh.triangles = _FieldTriangles.ToArray();
         _mesh.Optimize();
         _mesh.RecalculateNormals();
+    }
+
+    void CalculateDistance(){
+        float widthSqr = _roadThickness * _roadThickness; // 4
+        float distanceSqr = widthSqr / 2f; //2
+        _distance = Mathf.Sqrt(distanceSqr); //1.14
     }
 }
