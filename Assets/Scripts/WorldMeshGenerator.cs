@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshCollider))]
 [RequireComponent(typeof(FarmLandGenerator))]
+[RequireComponent(typeof(BorderGenerator))]
 
 public class WorldMeshGenerator : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class WorldMeshGenerator : MonoBehaviour
     [SerializeField] float _length = 1;
      
     FarmLandGenerator _farmLandGen;
+    BorderGenerator _borderGen;
 
     private List<Vector3> _FieldVertices = new List<Vector3>();
     private List<int> _FieldTriangles = new List<int>();
@@ -31,6 +33,7 @@ public class WorldMeshGenerator : MonoBehaviour
         _mesh = GetComponent<MeshFilter> ().mesh;
         _col = GetComponent<MeshCollider> ();
         _farmLandGen = GetComponent<FarmLandGenerator>();
+        _borderGen = GetComponent<BorderGenerator>();
 
         _cellWidth = _width / (float)_gridSize.x;
         _cellLength = _length / (float)_gridSize.y;
@@ -38,7 +41,7 @@ public class WorldMeshGenerator : MonoBehaviour
         CalculateDistance();
 
         _farmLandGen.PopulateData(_distance, _cellWidth - _distance, _cellLength -_distance);
-
+        _borderGen.PopulateData(_width,_length);
 
         int count = 0;
         for (int y = 0; y < _gridSize.y; y++){
@@ -48,9 +51,6 @@ public class WorldMeshGenerator : MonoBehaviour
                 count++;
             }
         }
-
-
-        
 
 
         PopulateMesh();
@@ -112,6 +112,10 @@ public class WorldMeshGenerator : MonoBehaviour
         _FieldTriangles.Add(offset + 3);
 
     }
+
+
+
+
 
     void PopulateMesh(){
         _mesh.Clear();
