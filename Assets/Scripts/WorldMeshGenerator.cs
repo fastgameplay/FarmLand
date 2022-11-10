@@ -37,7 +37,7 @@ public class WorldMeshGenerator : MonoBehaviour
         
         CalculateDistance();
 
-        _farmLandGen.PopulateData(_distance,_cellWidth,_cellLength);
+        _farmLandGen.PopulateData(_distance, _cellWidth - _distance, _cellLength -_distance);
 
 
         int count = 0;
