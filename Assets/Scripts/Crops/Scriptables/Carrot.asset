@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0864920271433741910f8683689a772, type: 3}
+  m_Name: Carrot
+  m_EditorClassIdentifier: 
+  Name: Carrot
+  HarvestTime: 5.5
+  XPMultiplier: 2
+  Type: 0
+  Crop: 0
+  Prefab: {fileID: 4183625145028500541, guid: ad7d51b0600cc5d4ebaa8738ce15648d, type: 3}
+  CropImage: {fileID: 21300000, guid: ec655f5a464af814589cc4ae17cebc66, type: 3}
