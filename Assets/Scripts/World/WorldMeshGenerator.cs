@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Unity.AI.Navigation;
 [RequireComponent(typeof(FarmLandGenerator))]
 [RequireComponent(typeof(BorderGenerator))]
 
 public class WorldMeshGenerator : MonoBehaviour
 {
+    [SerializeField] NavMeshSurface _navMeshSurface;
     [SerializeField] GameObject _pathway;
     [SerializeField] Vector2Int _gridSize = new Vector2Int(1,1);
     [SerializeField] float _roadThickness = 2;
@@ -56,6 +57,8 @@ public class WorldMeshGenerator : MonoBehaviour
 
 
         PopulateMesh();
+
+        _navMeshSurface.BuildNavMesh();
     }
 
 

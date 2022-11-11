@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Carrot
   m_EditorClassIdentifier: 
   Name: Carrot
-  GrowthDuration: 20
+  GrowthDuration: 5
   XPMultiplier: 2
   Type: 0
   Crop: 0
