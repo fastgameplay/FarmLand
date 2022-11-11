@@ -558,6 +558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b184fab2ededd0b47a23670b77caa301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TestCrop: {fileID: 11400000, guid: 1656be56d88695e4f90b5801e75dec9d, type: 2}
 --- !u!4 &1656861125
 Transform:
   m_ObjectHideFlags: 0

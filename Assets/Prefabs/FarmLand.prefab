@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 4871310100012091155}
   - component: {fileID: 1657511705598439456}
   - component: {fileID: 6215488601156799223}
+  - component: {fileID: -1732376587401949353}
+  - component: {fileID: 62811782749499223}
   m_Layer: 0
   m_Name: FarmLand
   m_TagString: FarmLand
@@ -98,3 +100,27 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &-1732376587401949353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4310973114633251705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4be2e50453a38ef499966ea5a46f1766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &62811782749499223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4310973114633251705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0237f748635bae45a05b217e55ee402, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

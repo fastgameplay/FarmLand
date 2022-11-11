@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HitDetector : MonoBehaviour{
     CameraMovement _cameraMovement;
+    [SerializeField] CropScriptable TestCrop;
+    
 
     void Start(){
         _cameraMovement =  Camera.main.GetComponent<CameraMovement>();
@@ -16,6 +18,10 @@ public class HitDetector : MonoBehaviour{
                 
                 if (hit.transform.tag == "FarmLand") {  
                     _cameraMovement.TargetTransform = hit.transform;
+                    FarmLand farmLand = hit.transform.GetComponent<FarmLand>();
+                    if(farmLand.IsCropPlanted) farmLand.Action();
+                    else farmLand.Plant(TestCrop);
+
                     return;
                 }  
                 _cameraMovement.ResetPosition();
