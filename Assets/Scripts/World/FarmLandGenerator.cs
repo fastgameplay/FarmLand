@@ -12,7 +12,9 @@ public class FarmLandGenerator : MonoBehaviour{
     int[] _triangles;
     
     
-    public void PopulateData(float distance, float cellWidth, float cellLength){
+    public void PopulateData(Vector2 halfSize){
+
+
 
         float widthSqr = _thickness * _thickness; // 4
         float distanceSqr = widthSqr / 2f; //2
@@ -21,40 +23,50 @@ public class FarmLandGenerator : MonoBehaviour{
         
         _vertices = new Vector3[]{
 
-            new Vector3(distance,      0, distance      ), //0
-            new Vector3(distance,      0, cellLength    ), //1   
-            new Vector3(cellWidth,     0, cellLength    ), //2
-            new Vector3(cellWidth,     0, distance      ), //3
+            new Vector3(-halfSize.x,      0, -halfSize.y     ), //0
+            new Vector3(-halfSize.x,      0, halfSize.y    ), //1   
+            new Vector3(halfSize.x,     0, halfSize.y    ), //2
+            new Vector3(halfSize.x,     0, -halfSize.y      ), //3
 
-            new Vector3(distance + _calculatedThickness,           _hight, distance + _calculatedThickness            ), //4
+            new Vector3(-halfSize.x + _calculatedThickness,  _hight, -halfSize.y + _calculatedThickness ), //4 (4)
 
-            new Vector3(distance + _calculatedThickness,           _hight, cellLength  - _calculatedThickness  ), //5
-            new Vector3(distance + _calculatedThickness,           _hight, cellLength  - _calculatedThickness  ), //6
+            new Vector3(-halfSize.x + _calculatedThickness,   _hight, halfSize.y - _calculatedThickness ), //5 (5)
+            new Vector3(-halfSize.x + _calculatedThickness,   _hight, halfSize.y - _calculatedThickness ), //6 (5)
 
-            new Vector3(cellWidth - _calculatedThickness,  _hight, cellLength - _calculatedThickness    ), //7
-            new Vector3(cellWidth - _calculatedThickness,  _hight, cellLength - _calculatedThickness    ), //8
+            new Vector3(halfSize.x  - _calculatedThickness,  _hight,  halfSize.y - _calculatedThickness ), //7 (6)
+            new Vector3(halfSize.x  - _calculatedThickness,  _hight,  halfSize.y - _calculatedThickness ), //8 (6)
 
-            new Vector3(cellWidth - _calculatedThickness,  _hight, distance + _calculatedThickness             ), //9
-            new Vector3(cellWidth - _calculatedThickness,  _hight, distance + _calculatedThickness             ), //10
+            new Vector3(halfSize.x  - _calculatedThickness,  _hight, -halfSize.y + _calculatedThickness ), //9 (7)
+            new Vector3(halfSize.x  - _calculatedThickness,  _hight, -halfSize.y + _calculatedThickness ), //10 (7)
 
-            new Vector3(distance + _calculatedThickness,           _hight, distance + _calculatedThickness            ), //11
+            new Vector3(-halfSize.x + _calculatedThickness,  _hight, -halfSize.y + _calculatedThickness ), //11 (4)
 
-            new Vector3(distance + _calculatedThickness,           _hight, distance + _calculatedThickness            ), //12
-            new Vector3(distance + _calculatedThickness,           _hight, cellLength  - _calculatedThickness  ), //13
-            new Vector3(cellWidth - _calculatedThickness,  _hight, cellLength - _calculatedThickness    ), //14
-            new Vector3(cellWidth - _calculatedThickness,  _hight, distance + _calculatedThickness             ), //15
+            new Vector3(-halfSize.x + _calculatedThickness,  _hight, -halfSize.y + _calculatedThickness ), //12 (4)
+            new Vector3(-halfSize.x + _calculatedThickness,  _hight,  halfSize.y - _calculatedThickness ), //13 (5)
+            new Vector3( halfSize.x - _calculatedThickness,  _hight,  halfSize.y - _calculatedThickness ), //14 (6)
+            new Vector3( halfSize.x - _calculatedThickness,  _hight, -halfSize.y + _calculatedThickness ), //15 (7)
 
+            
+            new Vector3(-halfSize.x,      0, -halfSize.y     ), //16 (0)
+            new Vector3(-halfSize.x,      0, halfSize.y    ), //17 (1)   
+            new Vector3(halfSize.x,     0, halfSize.y    ), //18 (2)
+            new Vector3(halfSize.x,     0, -halfSize.y      ), //19 (3)
         };
 
         _triangles = new int[]{
+            //left
             0,1,5,
             5,4,0,
-            1,2,7,
-            7,6,1,
+            //top
+            17,18,7,
+            7,6,17,
+            //rigt
             2,3,9,
             9,8,2,
-            3,0,11,
-            11,10,3,
+            //bot
+            19,16,11,
+            11,10,19,
+            //topCube
             12,13,15,
             15,13,14
 

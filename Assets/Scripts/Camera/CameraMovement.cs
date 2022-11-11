@@ -13,10 +13,8 @@ public class CameraMovement : MonoBehaviour{
     [SerializeField] float _transitionDuration;
     [SerializeField] Vector3 _offset;
     Vector3 _initialPosition;
-    Quaternion _initialRotation;
     void Start(){
         _initialPosition = transform.position;
-        _initialRotation = transform.rotation;
     }
 
     public void ResetPosition(){

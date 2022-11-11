@@ -11,18 +11,18 @@ public class BorderGenerator : MonoBehaviour{
 
     Mesh _mesh;
     MeshCollider _col;
-    public void PopulateData(float width, float length){
-
+    public void PopulateData(Vector2 halfSIze){
+        
         _vertices = new Vector3[]{
-            new Vector3(0,0,0),
-            new Vector3(0,0,length),
-            new Vector3(width,0,length),
-            new Vector3(width,0,0),
+            new Vector3(-halfSIze.x,0, -halfSIze.y),
+            new Vector3(-halfSIze.x,0,  halfSIze.y),
+            new Vector3(halfSIze.x ,0,  halfSIze.y),
+            new Vector3(halfSIze.x ,0, -halfSIze.y),
 
-            new Vector3(-_BorderSize,       0, -_BorderSize),
-            new Vector3(-_BorderSize,       0, length + _BorderSize),
-            new Vector3(width + _BorderSize,0, length + _BorderSize),
-            new Vector3(width + _BorderSize,0, -_BorderSize),
+            new Vector3(-halfSIze.x - _BorderSize, 0, -halfSIze.y - _BorderSize),
+            new Vector3(-halfSIze.x - _BorderSize, 0,  halfSIze.y + _BorderSize),
+            new Vector3( halfSIze.x + _BorderSize, 0,  halfSIze.y + _BorderSize),
+            new Vector3( halfSIze.x + _BorderSize, 0, -halfSIze.y - _BorderSize),
         };
         _triangles = new int[]{
             //left
@@ -41,7 +41,7 @@ public class BorderGenerator : MonoBehaviour{
 
         _mesh = _borderObject.GetComponent<MeshFilter> ().mesh;
         _col = _borderObject.GetComponent<MeshCollider>();
-        
+
         _mesh.Clear();
         _mesh.vertices = _vertices;
         _mesh.triangles = _triangles;

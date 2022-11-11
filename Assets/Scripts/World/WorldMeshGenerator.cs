@@ -22,7 +22,7 @@ public class WorldMeshGenerator : MonoBehaviour
     private Mesh _mesh;
     private MeshCollider _col;
 
-    
+    Vector2 _pathOffset;
 
     float _cellWidth;
     float _cellLength;
@@ -36,19 +36,20 @@ public class WorldMeshGenerator : MonoBehaviour
         _farmLandGen = GetComponent<FarmLandGenerator>();
         _borderGen = GetComponent<BorderGenerator>();
 
+        _pathOffset = new Vector2(_width/2,_length/2);
         _cellWidth = _width / (float)_gridSize.x;
         _cellLength = _length / (float)_gridSize.y;
         
         CalculateDistance();
 
-        _farmLandGen.PopulateData(_distance, _cellWidth - _distance, _cellLength -_distance);
-        _borderGen.PopulateData(_width,_length);
+        _farmLandGen.PopulateData(new Vector2(_cellWidth-(2*_distance), _cellLength - (2*_distance) ) / 2);
+        _borderGen.PopulateData(_pathOffset);
 
         int count = 0;
         for (int y = 0; y < _gridSize.y; y++){
             for (int x = 0; x < _gridSize.x; x++){
                 DrawPathway(x,y,count);
-                _farmLandGen.GenerateFarmLandAt(new Vector3(_cellWidth * x, 0, _cellLength * y));
+                _farmLandGen.GenerateFarmLandAt(new Vector3(-_pathOffset.x + _cellWidth * (x+0.5f), 0, -_pathOffset.y + _cellLength * (y+0.5f)));
                 count++;
             }
         }
@@ -59,8 +60,8 @@ public class WorldMeshGenerator : MonoBehaviour
 
 
     void DrawPathway(int x, int y, int index){
-        float xPos = _cellWidth * x;
-        float yPos = _cellLength * y;
+        float xPos = -_pathOffset.x + _cellWidth * x;
+        float yPos = -_pathOffset.y + _cellLength * y;
 
 
         _FieldVertices.Add(new Vector3(xPos,                0,  yPos                ));
