@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class HitDetector : MonoBehaviour{
+using UnityEngine.AI;
+ public class HitDetector : MonoBehaviour{
     CameraMovement _cameraMovement;
     [SerializeField] CropScriptable TestCrop;
     
-
+    [SerializeField] FarmerMovement farmerMovement;
     void Start(){
         _cameraMovement =  Camera.main.GetComponent<CameraMovement>();
+
+
     }
     void Update() {  
         if (Input.GetMouseButtonDown(0)) {  
@@ -19,8 +21,9 @@ public class HitDetector : MonoBehaviour{
                 if (hit.transform.tag == "FarmLand") {  
                     _cameraMovement.TargetTransform = hit.transform;
                     FarmLand farmLand = hit.transform.GetComponent<FarmLand>();
-                    if(farmLand.IsCropPlanted) farmLand.Action();
-                    else farmLand.Plant(TestCrop);
+
+                    if(farmLand.IsCropPlanted) farmerMovement.AddDestination(new FarmerDestination(farmLand,EFarmerActionType.Gather));
+                    else farmerMovement.AddDestination(new FarmerDestination(farmLand,EFarmerActionType.Plant,TestCrop));
 
                     return;
                 }  

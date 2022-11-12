@@ -11,14 +11,14 @@ public class FarmLand : MonoBehaviour{
     {
         _grower = GetComponent<CropGrower>();
     }
+    
     public void Plant(CropScriptable crop){
         if(_crop != null) return;
 
         _grower.PlantCrop(crop);
         _crop = crop;
     }
-
-    public void Action(){
+    public void Harvest(){
         if(_crop == null) return;
         if(isActionReady){
             switch(_crop.Type){
