@@ -6,12 +6,14 @@ public class RadialProgressBar : MonoBehaviour{
     public float Progress{
         set{
             _image.fillAmount = value;
-            _image.color = Color.Lerp(Color.red,Color.green,value);
+            _image.color = Color.Lerp(_startColor,_endColor,value);
             transform.localPosition = new Vector3(_targetPosition.x, _targetPosition.y + value, _targetPosition.z);
         }
     }
     public bool IsActive{set{_image.enabled = value;}}
     [SerializeField] Vector3 _offset = Vector3.zero;
+    [SerializeField] Color _startColor;
+    [SerializeField] Color _endColor;
     Vector3 _targetPosition;
     Image _image;
     void Awake(){
