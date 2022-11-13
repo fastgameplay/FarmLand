@@ -113,6 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4be2e50453a38ef499966ea5a46f1766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _radialBarPrefab: {fileID: 6632676356164461840, guid: a172e21e8f4773c48a5d825e8bd12ec7, type: 3}
 --- !u!114 &62811782749499223
 MonoBehaviour:
   m_ObjectHideFlags: 0
