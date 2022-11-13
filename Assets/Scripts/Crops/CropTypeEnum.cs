@@ -1,1 +1,1 @@
-public enum CropTypeEnum { Harvestable, NonHarvestable, destructible}
+public enum CropTypeEnum { Harvestable, NonHarvestable, destructible, Empty}

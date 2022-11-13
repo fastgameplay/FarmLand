@@ -1,1 +1,1 @@
-public enum CropEnum{Carrot,Tree,Grass}
+public enum CropEnum{Carrot,Tree,Grass,Empty}
