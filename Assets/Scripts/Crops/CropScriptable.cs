@@ -9,7 +9,10 @@ public class CropScriptable : ScriptableObject{
     public CropTypeEnum Type;
     public CropEnum Crop;
     
-    public GameObject Prefab;
+    [SerializeField] GameObject[] prefabs;
+    public GameObject Prefab{get {return prefabs[Random.Range(0,prefabs.Length)];}}
+
+    
 
     public Sprite CropImage;
 

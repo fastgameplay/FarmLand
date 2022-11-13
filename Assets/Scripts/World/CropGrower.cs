@@ -29,6 +29,7 @@ public class CropGrower : MonoBehaviour{
     }
     public void PlantCrop(CropScriptable crop){
         if (currentProgressBar == null) currentProgressBar = Instantiate(_radialBarPrefab).SetTarget(transform.position);
+        if (crop.Type == CropTypeEnum.NonHarvestable) currentProgressBar.DestroyAfterEnd();
         _cropObject = Instantiate(crop.Prefab, transform.position, Quaternion.identity, transform);
         _finalScale = _cropObject.transform.localScale;
         StartCoroutine(IEGrowCrop(crop.GrowthDuration));

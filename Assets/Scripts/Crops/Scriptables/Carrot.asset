@@ -17,5 +17,6 @@ MonoBehaviour:
   XPMultiplier: 2
   Type: 0
   Crop: 0
-  Prefab: {fileID: 6376407677373332725, guid: ad7d51b0600cc5d4ebaa8738ce15648d, type: 3}
-  CropImage: {fileID: 21300000, guid: ec655f5a464af814589cc4ae17cebc66, type: 3}
+  prefabs:
+  - {fileID: 6376407677373332725, guid: ad7d51b0600cc5d4ebaa8738ce15648d, type: 3}
+  CropImage: {fileID: 21300000, guid: 94d64e5f694a580469ff1ba9c743c937, type: 3}
