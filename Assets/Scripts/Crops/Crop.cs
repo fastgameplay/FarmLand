@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Crop: MonoBehaviour{
-    //attached to crop object
-    private float _growthDuration; //TODO: Move To CropGrower(Attached to crop gameobject)
-    private float _exp;
-    private CropAction _action;
-    private CropEnum _CropType;
 
+    public CropTypeEnum Type{get; private set;}
+    CropAction _action;
 
-    public void Grow(){
-
+    public void SetCrop(CropEnum type, float expiriance, CropTypeEnum actionType){
+        Type = actionType;
+        _action = CropActionFactory.GetAction(actionType, expiriance, type);
     }
-    public void Harvest(){
 
+    public bool Harvest(){
+        return _action.Run();
     }
 
 

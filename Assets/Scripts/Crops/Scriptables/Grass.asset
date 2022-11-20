@@ -15,8 +15,8 @@ MonoBehaviour:
   Name: Carrot
   GrowthDuration: 7
   XPMultiplier: 1
+  Action: 2
   Type: 2
-  Crop: 2
   prefabs:
   - {fileID: 7225802352010931556, guid: 6d01008e86ecef24f94f5a8e265c742a, type: 3}
   CropImage: {fileID: 21300000, guid: 6d9ff5ce9d7f48a47b10600322db143f, type: 3}

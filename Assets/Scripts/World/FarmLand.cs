@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(CropGrower))]
 public class FarmLand : MonoBehaviour{
-    public bool IsCropPlanted{get{return _crop != null;}}
+    [SerializeField] RadialProgressBar _progressBarPrefab;
+    public bool IsCropPlanted{get{return (_crop != null || _grower != null);}}
     public CropTypeEnum CropType {
         get {
             if(_crop != null){
@@ -12,37 +12,44 @@ public class FarmLand : MonoBehaviour{
             return CropTypeEnum.Empty;
         }
     }
-    CropScriptable _crop;
+    Crop _crop;
     CropGrower _grower;
+    RadialProgressBar _progressBar;
     bool isActionReady {get{return _grower.Progress == 1;}}
+
     void Awake()
     {
         _grower = GetComponent<CropGrower>();
+        _progressBar = Instantiate(_progressBarPrefab);
+        _progressBar.IsActive = false;
     }
     
     public void Plant(CropScriptable crop){
-        if(_crop != null) return;
 
-        _grower.PlantCrop(crop);
-        _crop = crop;
+        if(IsCropPlanted) return;
+        GameObject cropObj = Instantiate(crop.Prefab,transform.position,Quaternion.identity, transform);
+        
+        _crop = cropObj.AddComponent<Crop>();
+        _crop.SetCrop(crop.Type, crop.Exp, crop.Action);
+        _progressBar.SetTarget(cropObj.transform.position);
+        if(crop.Action == CropTypeEnum.NonHarvestable) _progressBar.DestroyAfterEnd();
+        
+        _grower = cropObj.AddComponent<CropGrower>();
+        _grower.GrowCrop(cropObj, crop.GrowthDuration, _progressBar);
+        
+        
     }
+
+
     public void Harvest(){
         if(_crop == null) return;
+
         if(isActionReady){
-            switch(_crop.Type){
-                case CropTypeEnum.Harvestable:
-                    CropStorage.Instance.AddCrop(_crop.Crop,1);
-                    ExpStorage.Instance.AddExp(_crop.Exp);
-                    _grower.DestoryCrop();
-                    _crop = null;
-                    break;
-                case CropTypeEnum.destructible:
-                    _grower.DestoryCrop();
-                    ExpStorage.Instance.AddExp(_crop.Exp);
-                    _crop = null;
-                    break;
-                default:
-                    break;
+            if(_crop.Harvest()){
+                Destroy(_crop.gameObject);
+                _crop = null;
+                _grower = null;
+                _progressBar.IsActive = false;
             }
         }
     }
